@@ -41,7 +41,7 @@ async function run() {
     })
     //get fruits for HomePage sample
     app.get('/fruitsSample', async (req, res) => {
-      const cursor = fruitsCollection.find().limit(5);
+      const cursor = fruitsCollection.find().limit(8);
       const result = await cursor.toArray();
       res.send(result);
     })
