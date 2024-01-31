@@ -37,12 +37,21 @@ async function run() {
       const cursor = fruitsCollection.find();
       const result = await cursor.toArray();
       res.send(result);
-        
+
     })
     //get fruits for HomePage sample
     app.get('/fruitsSample', async (req, res) => {
       const cursor = fruitsCollection.find().limit(8);
       const result = await cursor.toArray();
+      res.send(result);
+    })
+    //get fruits by search keyword
+    app.get('/fruitSearch', async (req, res) => {
+      let query = {};
+      if (req.query?.tags) {
+        query = { tags: req.query.tags };
+      }
+      const result = await fruitsCollection.find(query).toArray();
       res.send(result);
     })
 

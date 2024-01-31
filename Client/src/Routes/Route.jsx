@@ -5,6 +5,7 @@ import HomePage from "../Pages/HomePage/HomePage";
 import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 import AllProducts from "../Pages/AllProducts/AllProducts";
 import SearchProduct from "../Pages/SearchPage/SearchProduct";
+import Register from "../Pages/RegisterPage/Register";
 
 
 export const router = createBrowserRouter([
@@ -23,6 +24,10 @@ export const router = createBrowserRouter([
         {
           path: "/search",
           element:<SearchProduct></SearchProduct>,
+        },
+        {
+          path: "/register",
+          element:<Register></Register>,
         },
       ]
     },
