@@ -25,7 +25,6 @@ const verifyToken = async (req, res, next) => {
       return res.status(403).send({ message: 'Forbidden access' });
     }
     if (decoded) {
-      req.user = decoded;
       next();
     }
   })
@@ -107,6 +106,7 @@ async function run() {
     //Get user based cart products
     app.get('/cart', verifyToken, async (req, res) => {
       let query = {};
+      console.log(req.query.email);
       if (req.query?.email) {
         query = { email: req.query.email};
       }
