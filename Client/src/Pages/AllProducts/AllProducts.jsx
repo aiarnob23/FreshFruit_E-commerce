@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axiosInstance from "../../../axiosConfig";
-import SingleProduct from "../../SharedComponents/SingleProductView/SingleProduct";
+import SingleProduct from "../../SharedComponents/SingleProduct/SingleProduct";
 
 const AllProducts = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });

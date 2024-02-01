@@ -2,7 +2,7 @@ import '../SearchPage/SearchProduct.css'
 import { AiOutlineSearch } from "react-icons/ai";
 import axiosInstance from '../../../axiosConfig';
 import { useState } from 'react';
-import SingleProduct from '../../SharedComponents/SingleProductView/SingleProduct';
+import SingleProduct from '../../SharedComponents/SingleProduct/SingleProduct';
 
 
 const SearchProduct = () => {
