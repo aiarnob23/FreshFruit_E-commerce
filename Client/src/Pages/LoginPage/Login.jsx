@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import { errorAlert, successAlert } from "../../../sweetAlerts";
 
@@ -105,9 +105,14 @@ const Login = () => {
                         </div>
 
                     </div>
-
-                </div>
+                    <div>
+                Are you admin?
+                <Link to='/adminLogin'><button className="btn">Admin Login</button></Link>
             </div>
+                </div>
+              
+            </div>
+         
         </div>
     );
 };

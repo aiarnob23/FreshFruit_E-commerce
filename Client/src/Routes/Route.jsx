@@ -9,6 +9,8 @@ import Register from "../Pages/RegisterPage/Register";
 import Cart from "../Pages/CartPage/Cart";
 import PrivateRoute from "./PrivateRoute";
 import Login from "../Pages/LoginPage/Login";
+import AdminLogin from "../Pages/LoginPage/AdminLogin";
+import AdminDashboard from "../Pages/AdminDashboard/AdminDashboard";
 
 
 export const router = createBrowserRouter([
@@ -40,10 +42,24 @@ export const router = createBrowserRouter([
           path: "/cart",
           element:<PrivateRoute><Cart></Cart></PrivateRoute>,
         },
+        {
+          path: "/adminLogin",
+          element:<AdminLogin></AdminLogin>,
+        },
       ]
     },
     {
       path:'*',
       element:<ErrorPage></ErrorPage>,
+    },
+    {
+      path:'/adminDashBoard',
+      element:<AdminDashboard></AdminDashboard>,
+      children:[
+        {
+          path: "/adminDashBoard/nav",
+          element:<h1>okay</h1>,
+        },
+      ]
     },
   ]);

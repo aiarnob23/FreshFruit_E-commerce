@@ -7,7 +7,7 @@ const cookieParser = require('cookie-parser')
 
 const port = process.env.PORT || 3000;
 
-//middlewares
+//middlewares 
 const app = express();
 app.use(cookieParser());
 app.use(cors({
@@ -15,6 +15,7 @@ app.use(cors({
   credentials: true,
 }));
 app.use(express.json());
+
 const verifyToken = async (req, res, next) => {
   const token = req.cookies?.token;
   if (!token) {
@@ -73,6 +74,7 @@ async function run() {
     //-------------DB handle functions------------------//
     const fruitsCollection = client.db('FreshFruit').collection('fruits');
     const fruitsCart = client.db('FreshFruit').collection('userCart');
+    const admins = client.db('FreshFruit').collection('adminAccess');
 
     //get all fruits
     app.get('/fruits', async (req, res) => {
@@ -112,6 +114,13 @@ async function run() {
       }
       const result = await fruitsCart.find(query).toArray();
       res.send(result);
+    })
+    //check if admin or not
+    app.get('/adminAccess',async(req,res)=>{
+       let query = {};
+      query ={email: req.query?.email};
+       const result = await admins.find(query).toArray();
+       res.send(result);
     })
 
 

@@ -10,6 +10,7 @@ const AuthProvider = ({ children }) => {
     //handle states 
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
+    const [adminStatus, setAdminStatus] = useState(false);
 
     //handle Email-pass Register 
     const EmailReg = (email, password) => {
@@ -28,18 +29,7 @@ const AuthProvider = ({ children }) => {
     }
     //handle logOut
     const SignOut = async() => {
-       try{
-        await axiosInstance.post('/clearCookies',{
-            user: user.email,
-        },
-        {
-            withCredentials:true,
-        })
         return await signOut(auth);
-       }
-       catch(error){
-        console.log(error);
-       }
     }
 
     //onAuth state change handler
@@ -60,6 +50,10 @@ const AuthProvider = ({ children }) => {
                     console.log(error);
                 })
             }
+            else{
+                setAdminStatus(false);
+                setUser(null);
+            }
         })
         return () => unsubscribe();
     })
@@ -71,6 +65,9 @@ const AuthProvider = ({ children }) => {
         EmailSignIn,
         loading,
         user,
+        setUser,
+        setAdminStatus,
+        adminStatus
 
     }
     return (
