@@ -10,7 +10,6 @@ const AuthProvider = ({ children }) => {
     //handle states 
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
-    const [adminStatus, setAdminStatus] = useState(false);
 
     //handle Email-pass Register 
     const EmailReg = (email, password) => {
@@ -50,10 +49,6 @@ const AuthProvider = ({ children }) => {
                     console.log(error);
                 })
             }
-            else{
-                setAdminStatus(false);
-                setUser(null);
-            }
         })
         return () => unsubscribe();
     })
@@ -66,9 +61,6 @@ const AuthProvider = ({ children }) => {
         loading,
         user,
         setUser,
-        setAdminStatus,
-        adminStatus
-
     }
     return (
         <AuthContext.Provider value={authInfo}>

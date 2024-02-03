@@ -4,23 +4,20 @@ import axiosInstance from "../../../axiosConfig";
 import { errorAlert } from "../../../sweetAlerts";
 
 const AdminLogin = () => {
-    const {GsignIn,setAdminStatus} = useContext(AuthContext);
+    const {GsignIn} = useContext(AuthContext);
 
     const handleAdminLogin=()=>{
         GsignIn()
-        .then((res)=>{
+        .then(async(res)=>{
             const email = res.user.email;
-            axiosInstance.get(`/adminAccess?email=${email}`)
+           await axiosInstance.get(`/adminAccess?email=${email}`)
             .then(async(res)=>{
-                const userCheck =await res.data;
-                const roleCheck = userCheck[0]?.role|| 'null';
-                console.log(roleCheck);
-                if(roleCheck=='admin'){
-                    setAdminStatus(true);
-                    window.location.replace('/adminDashBoard');
+                if(res.data){
+                    setTimeout(()=>{
+                        window.location.replace('/adminDashBoard');
+                    },500)
                 }
                 else{
-                    setAdminStatus(false);
                     errorAlert('You are not an Admin!');
                     setTimeout(()=>{
                         window.location.replace('/login');

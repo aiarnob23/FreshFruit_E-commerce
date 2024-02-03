@@ -31,6 +31,8 @@ const verifyToken = async (req, res, next) => {
   })
 }
 
+
+
 //initializing app.get
 app.get('/', (req, res) => {
   res.send('E-Commerce Server');
@@ -63,6 +65,7 @@ async function run() {
         })
         .send({ status: 200, success: true });
     })
+
 
     app.post('/clearCookies', async (req, res) => {
       const user = req.body;
@@ -116,14 +119,21 @@ async function run() {
       res.send(result);
     })
     //check if admin or not
-    app.get('/adminAccess',async(req,res)=>{
+    app.get('/adminAccess', async(req,res)=>{
        let query = {};
       query ={email: req.query?.email};
+      console.log(query);
        const result = await admins.find(query).toArray();
-       res.send(result);
+       const isAdmin = await result[0]?.role == 'admin';
+       if(isAdmin){
+        console.log(result);
+        console.log(isAdmin);
+        return res.send(result);
+       }
+       else{
+        return res.status(403).send({message:'Forbidden Access'});
+       }
     })
-
-
 
 
   } finally {
