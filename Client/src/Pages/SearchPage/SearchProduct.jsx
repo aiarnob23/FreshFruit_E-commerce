@@ -45,7 +45,8 @@ const SearchProduct = () => {
                 {
                     fruitViaResult?.map(fruit=><SingleProduct 
                     key={fruit._id}
-                    fruit={fruit}>
+                    fruit={fruit}
+                    >
 
                     </SingleProduct>)
                 }

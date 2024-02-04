@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
 
 
 //mongodb connection
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `mongodb+srv://aiarnob23:${process.env.MONGO_PASS}@cluster0.vvmqsfs.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
   serverApi: {
@@ -84,15 +84,23 @@ async function run() {
       const cursor = fruitsCollection.find();
       const result = await cursor.toArray();
       res.send(result);
-
     })
+
+    //add a fruit to the DB
+    app.post('/fruits', verifyToken, async (req, res) => {
+      const newFruit = req.body;
+      console.log(newFruit);
+      const result = await fruitsCollection.insertOne(newFruit);
+      res.send(result);
+    })
+
     //get fruits for HomePage sample
     app.get('/fruitsSample', async (req, res) => {
       const cursor = fruitsCollection.find().limit(8);
       const result = await cursor.toArray();
       res.send(result);
     })
-    //get fruits by search keyword
+    //get fruits by search keyword like tags or id
     app.get('/fruitSearch', async (req, res) => {
       let query = {};
       if (req.query?.tags) {
@@ -100,7 +108,37 @@ async function run() {
         const result = await fruitsCollection.find(query).toArray();
         return res.send(result);
       }
+      if (req.query.id) {
+        query = { _id: new ObjectId(req.query.id) };
+        const result = await fruitsCollection.findOne(query);
+        return res.send(result);
+      }
 
+    })
+    //update a product
+    app.put('/fruits/:id',verifyToken, async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedProduct = req.body;
+
+      const product = {
+        $set: {
+          name: updatedProduct.name,
+          image: updatedProduct.image,
+          quantity: updatedProduct.quantity,
+          price: updatedProduct.price,
+        }
+      }
+      const result = await fruitsCollection.updateOne(filter, product, options);
+      res.send(result);
+    })
+    //delete a product 
+    app.delete('/fruits/:id', async(req,res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await fruitsCollection.deleteOne(query);
+      res.send(result);
     })
     //Post product to the cart
     app.post('/cart', async (req, res) => {
@@ -113,26 +151,26 @@ async function run() {
       let query = {};
       console.log(req.query.email);
       if (req.query?.email) {
-        query = { email: req.query.email};
+        query = { email: req.query.email };
       }
       const result = await fruitsCart.find(query).toArray();
       res.send(result);
     })
     //check if admin or not
-    app.get('/adminAccess', async(req,res)=>{
-       let query = {};
-      query ={email: req.query?.email};
+    app.get('/adminAccess', async (req, res) => {
+      let query = {};
+      query = { email: req.query?.email };
       console.log(query);
-       const result = await admins.find(query).toArray();
-       const isAdmin = await result[0]?.role == 'admin';
-       if(isAdmin){
+      const result = await admins.find(query).toArray();
+      const isAdmin = await result[0]?.role == 'admin';
+      if (isAdmin) {
         console.log(result);
         console.log(isAdmin);
         return res.send(result);
-       }
-       else{
-        return res.status(403).send({message:'Forbidden Access'});
-       }
+      }
+      else {
+        return res.status(403).send({ message: 'Forbidden Access' });
+      }
     })
 
 

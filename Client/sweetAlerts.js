@@ -19,7 +19,7 @@ export const errorAlert = (notificationMessage) => {
   });
 }
 
-export const confirmationAlert = (notificationMessage) => {
+export const confirmationAlert = () => {
   Swal.fire({
     title: "Are you sure?",
     text: "You won't be able to revert this!",
@@ -32,7 +32,7 @@ export const confirmationAlert = (notificationMessage) => {
     if (result.isConfirmed) {
       Swal.fire({
         title: "Deleted!",
-        text: `${notificationMessage}`,
+        text: "Deleted Successfully",
         icon: "success"
       });
     }

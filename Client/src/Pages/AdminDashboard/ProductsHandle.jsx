@@ -1,7 +1,40 @@
 import PropTypes from 'prop-types';
-const ProductsHandle = ({product}) => {
+import { Link } from 'react-router-dom';
+import axiosInstance from '../../../axiosConfig';
+import Swal from 'sweetalert2'
 
-    const {name, price, quantity, image} = product;
+
+const ProductsHandle = ({ product, refetch }) => {
+
+    const { name, price, quantity, image, _id } = product;
+
+    const deleteProduct = () => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosInstance.delete(`/fruits/${_id}`, {
+                    withCredentials: true,
+                })
+                    .then((res) => {
+                        console.log(res.data);
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Deleted Successfully",
+                            icon: "success"
+                        });
+                        refetch();
+                    })
+
+            }
+        });
+    }
 
     return (
         <div>
@@ -12,9 +45,8 @@ const ProductsHandle = ({product}) => {
                     <p>Quantity: {quantity}</p>
                     <p>Price: {price} $</p>
                     <div className="card-actions justify-end">
-                        <button className="btn btn-outline btn-info">Edit 
-                        </button>
-                        <button className="btn btn-outline btn-warning">Delete</button>
+                        <Link to={`/UpdateProduct/${_id}`}><button className="btn btn-outline btn-info">Edit</button></Link>
+                        <button onClick={deleteProduct} className="btn btn-outline btn-warning">Delete</button>
                     </div>
                 </div>
             </div>
@@ -24,6 +56,7 @@ const ProductsHandle = ({product}) => {
 
 export default ProductsHandle;
 
-ProductsHandle.propTypes={
-    product:PropTypes.object,
+ProductsHandle.propTypes = {
+    product: PropTypes.object,
+    refetch: PropTypes.func,
 }
