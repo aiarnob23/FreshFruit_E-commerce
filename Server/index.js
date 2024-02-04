@@ -3,7 +3,12 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
+const SSLCommerzPayment = require('sslcommerz-lts');
+//sslCommerce payment
+const store_id = process.env.STORE_ID;
+const store_passwd = process.env.STORE_PASS;
+const is_live = false //true for live, false for sandbox
 
 const port = process.env.PORT || 3000;
 
@@ -96,7 +101,7 @@ async function run() {
 
     //get fruits for HomePage sample
     app.get('/fruitsSample', async (req, res) => {
-      const cursor = fruitsCollection.find().limit(8);
+      const cursor = fruitsCollection.find().limit(4);
       const result = await cursor.toArray();
       res.send(result);
     })
@@ -172,6 +177,59 @@ async function run() {
         return res.status(403).send({ message: 'Forbidden Access' });
       }
     })
+
+    app.post('/paymentSuccess',(req,res)=>{
+      console.log(req);
+      res.redirect('http://localhost:5173/products');
+    })
+    app.post('/paymentFailed',(req,res)=>{
+      res.redirect('http://localhost:5173/cart');
+    })
+
+    
+    //sslcommerz init
+app.post('/init',verifyToken, (req, res) => {
+  const trans_id = new ObjectId().toString();
+  console.log(req.body);
+  const data = {
+      total_amount: req.body.price,
+      currency: 'BDT',
+      tran_id: trans_id, 
+      success_url: 'http://localhost:8080/paymentSuccess',
+      fail_url: 'http://localhost:8080/paymentFailed',
+      cancel_url: 'http://localhost:8080/paymentFailed',
+      ipn_url: 'http://localhost:3030/ipn',
+      shipping_method: 'Courier',
+      product_name: 'Computer.',
+      product_category: 'Electronic',
+      product_profile: 'general',
+      cus_name: 'Customer Name',
+      cus_email: 'customer@example.com',
+      cus_add1: 'Dhaka',
+      cus_add2: 'Dhaka',
+      cus_city: 'Dhaka',
+      cus_state: 'Dhaka',
+      cus_postcode: '1000',
+      cus_country: 'Bangladesh',
+      cus_phone: '01711111111',
+      cus_fax: '01711111111',
+      ship_name: 'Customer Name',
+      ship_add1: 'Dhaka',
+      ship_add2: 'Dhaka',
+      ship_city: 'Dhaka',
+      ship_state: 'Dhaka',
+      ship_postcode: 1000,
+      ship_country: 'Bangladesh',
+  };
+  const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live)
+  sslcz.init(data).then(apiResponse => {
+      // Redirect the user to payment gateway
+      let GatewayPageURL = apiResponse.GatewayPageURL
+      res.send({url: GatewayPageURL});
+      console.log('Redirecting to: ', GatewayPageURL)
+  });
+})
+
 
 
   } finally {

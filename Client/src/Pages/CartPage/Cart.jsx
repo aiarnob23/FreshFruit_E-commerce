@@ -8,6 +8,17 @@ const Cart = () => {
     const {user} = useContext(AuthContext);
     //Handle cart products
 
+     
+    const handlePayment =async () => {
+      const data = { price: 150 };
+      
+      await axiosInstance.post('/init',data,{withCredentials:true})
+      .then(res=>{
+        window.location.replace(res.data.url);
+      })
+  }
+
+
     const { isPending, error, data } = useQuery({
         queryKey: ['userCart'],
         queryFn: async() =>
@@ -31,6 +42,9 @@ const Cart = () => {
             {
                 data.length
             }
+            <div>
+                <div onClick={handlePayment} className="btn btn-warning">Pay with SSLCommerz</div>
+            </div>
         </div>
     );
 };

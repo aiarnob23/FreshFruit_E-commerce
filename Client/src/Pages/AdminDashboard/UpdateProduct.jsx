@@ -34,6 +34,7 @@ const UpdateProduct = () => {
         })
         .then(res=>{
             console.log(res.data);
+            window.location.replace('/adminDashBoard');
         })
 
     }

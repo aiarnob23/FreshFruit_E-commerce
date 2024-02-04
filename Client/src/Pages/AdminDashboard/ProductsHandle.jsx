@@ -27,7 +27,8 @@ const ProductsHandle = ({ product, refetch }) => {
                         Swal.fire({
                             title: "Deleted!",
                             text: "Deleted Successfully",
-                            icon: "success"
+                            icon: "success",
+                            timer:1000
                         });
                         refetch();
                     })
