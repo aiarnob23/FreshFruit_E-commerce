@@ -1,10 +1,19 @@
 import { Link, NavLink } from "react-router-dom";
 import '../Navbar/Navbar.css'
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../AuthProvider/AuthProvider"
+import axiosInstance from "../../../axiosConfig";
 
 const Navbar = () => {
-    const { user, SignOut} = useContext(AuthContext);
+    const { user, SignOut } = useContext(AuthContext);
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        axiosInstance.get(`/adminAccess?email=${user?.email}`)
+            .then(res => {
+                setIsAdmin((res.data)[0].role == 'admin');
+            })
+    }, [user])
 
     //function for sign out user
     const logOut = () => {
@@ -22,6 +31,15 @@ const Navbar = () => {
         <li><NavLink to='/login'>login</NavLink></li>
         <li><NavLink to='/cart'>Cart</NavLink></li>
     </>
+    const adminNavLinks = <>
+        <li><NavLink to='/'>Home</NavLink></li>
+        <li><NavLink to='/adminDashBoard'>Admin Control</NavLink></li>
+        <li><NavLink to='/products'>All Products</NavLink></li>
+        <li><NavLink to='/search'>Search</NavLink></li>
+        <li><NavLink to='/register'>Register</NavLink></li>
+        <li><NavLink to='/login'>login</NavLink></li>
+        <li><NavLink to='/cart'>Cart</NavLink></li>  
+    </>
     return (
         <div className="container mx-auto">
             <div className="navbar bg-base-100">
@@ -31,14 +49,14 @@ const Navbar = () => {
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
                         </div>
                         <ul id="navs" tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                            {NavLinks}
+                            {isAdmin ? adminNavLinks : NavLinks}
                         </ul>
                     </div>
                     <a className="btn text-[#008000] btn-ghost text-xl">Fresh Fruits</a>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul id="navs" className="menu menu-horizontal px-1">
-                        {NavLinks}
+                        {isAdmin ? adminNavLinks : NavLinks}
                     </ul>
                 </div>
                 <div className="navbar-end">
@@ -53,7 +71,6 @@ const Navbar = () => {
                                 <Link to='/login'><button className="btn btn-ghost text-[#008000]">Login</button></Link>
                             </div></>
                     }
-
                 </div>
             </div>
         </div>

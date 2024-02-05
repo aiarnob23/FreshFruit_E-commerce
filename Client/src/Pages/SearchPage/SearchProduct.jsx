@@ -1,4 +1,4 @@
-import '../SearchPage/SearchProduct.css'
+
 import { AiOutlineSearch } from "react-icons/ai";
 import axiosInstance from '../../../axiosConfig';
 import { useState } from 'react';
@@ -26,7 +26,7 @@ const SearchProduct = () => {
 
 
     return (
-        <div className="searchBody container mx-auto">
+        <div className="min-h-screen p-2 md:p-4 lg:p-0 container mx-auto">
             {/* search input field */}
             <div className='my-10'>
                 <form onSubmit={handleSearchFruit}>
@@ -41,7 +41,7 @@ const SearchProduct = () => {
             </div>
 
             {/* display search results */}
-            <div className='grid grid-cols-4 gap-4'>
+            <div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4'>
                 {
                     fruitViaResult?.map(fruit=><SingleProduct 
                     key={fruit._id}

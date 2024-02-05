@@ -14,12 +14,13 @@ const port = process.env.PORT || 3000;
 
 //middlewares 
 const app = express();
+app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
   origin: ['http://localhost:5173'],
   credentials: true,
 }));
-app.use(express.json());
+
 
 const verifyToken = async (req, res, next) => {
   const token = req.cookies?.token;
@@ -86,9 +87,13 @@ async function run() {
 
     //get all fruits
     app.get('/fruits', async (req, res) => {
-      const cursor = fruitsCollection.find();
-      const result = await cursor.toArray();
-      res.send(result);
+        const page = parseInt(req.query.page);
+        const size = parseInt(req.query.size);
+        console.log(page, ' ', size);
+        const cursor = fruitsCollection.find().skip((page-1)*size).limit(size);
+        const result = await cursor.toArray();
+        return res.send(result);
+      
     })
 
     //add a fruit to the DB
@@ -97,6 +102,12 @@ async function run() {
       console.log(newFruit);
       const result = await fruitsCollection.insertOne(newFruit);
       res.send(result);
+    })
+    //get all products length
+    app.get('/fruitsLength', async (req, res) => {
+      const cursor = fruitsCollection.find();
+      const result = await cursor.toArray();
+      res.send({length: result.length});
     })
 
     //get fruits for HomePage sample

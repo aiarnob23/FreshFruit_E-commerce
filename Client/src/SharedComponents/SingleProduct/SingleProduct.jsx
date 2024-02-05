@@ -44,7 +44,7 @@ const SingleProduct = ({fruit}) => {
                     <p>Quantity: {quantity}</p>
                     <p>Price: {price} $</p>
                     <div className="card-actions justify-end">
-                        <button onClick={addToCart} className="btn btn-primary">Add to Cart</button>
+                        <button onClick={addToCart} className="btn text-white bg-green-600">Add to Cart</button>
                     </div>
                 </div>
             </div>

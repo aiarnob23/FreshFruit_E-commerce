@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import side from "../../assets/Side2.jpg"
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
@@ -56,8 +57,11 @@ const Login = () => {
 
     //-------return body-------
     return (
-        <div>
-            <div className="hero min-h-screen bg-base-200">
+        <div className="flex container mx-auto relative flex-row-reverse">
+            <div>
+                <img className="h-[800px] hidden md:flex rounded-lg" src={side} alt="" />
+            </div>
+            <div className="hero md:-left-[20%] md:top-20 md:absolute">
                 <div className="hero-content  flex-col">
                     <div className="text-center lg:text-left">
                         <h1 className="text-5xl font-bold">Login First!</h1>
@@ -94,9 +98,9 @@ const Login = () => {
                             </div>
                         </form>
                         <div>
-                            <p>Or</p>
+                            <p className="text-center">Or</p>
                             <div>
-                                <p>Login with <button onClick={GLogIn} className="btn  btn-success text-white">Google</button></p>
+                                <p className="text-center">Login with <br/><button onClick={GLogIn} className="btn my-4 btn-success text-white">Google</button></p>
                             </div>
                         </div>
 

@@ -2,6 +2,7 @@ import { useContext, useEffect, useState} from "react";
 import axiosInstance from "../../../axiosConfig";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import AdminHome from '../AdminDashboard/AdminHome';
+import Navbar from '../../SharedComponents/Navbar/Navbar';
 
 const AdminDashboard = () => {
   const {user} = useContext(AuthContext);
@@ -23,6 +24,7 @@ const AdminDashboard = () => {
 
    if(data) return(
     <div>
+      <Navbar></Navbar>
       <AdminHome></AdminHome>
     </div>
    )

@@ -3,6 +3,7 @@ import axiosInstance from '../../../axiosConfig';
 import ProductsHandle from './ProductsHandle';
 import { useContext } from 'react';
 import { AuthContext } from "../../AuthProvider/AuthProvider";
+// import Navbar from '../../SharedComponents/Navbar';
 
 const AdminHome = () => {
     const {user,SignOut} = useContext(AuthContext)
@@ -51,6 +52,7 @@ const AdminHome = () => {
         if (error) return error
     return (
         <div className='container mx-auto my-8'>
+            {/* <Navbar></Navbar> */}
             <div>
                 <h1 className='text-2xl text-green-600 font-semibold text-center mb-1'>Admin Home</h1>
             </div>

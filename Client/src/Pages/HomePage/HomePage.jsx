@@ -24,12 +24,12 @@ const HomePage = () => {
         <div className="container px-2 md:px-6 lg:px-0 lg:mx-auto">
             {/* ------Banner-------  */}
             < div className='rounded-lg relative'>
-                <div className="hero bg-fit bg-no-repeat h-[200px] md:h-[360px] lg:h-[700px] rounded-lg" style={{ backgroundImage: `url(${banner})` }}>
+                <div className="hero  bg-no-repeat h-[400px] md:h-[360px] lg:h-[700px] rounded-lg" style={{ backgroundImage: `url(${banner})` }}>
                     <div className="hero-overlay rounded-lg bg-opacity-20"></div>
                     <div className="hero-content rounded-lg text-center text-neutral-content">
                         <div className="rounded-lg flex flex-col gap-6 top-[15%] text-green-800 absolute max-w-md">
-                            <h1 className='text-6xl text-center'>Buy Fresh <br/> Be Fresh</h1>
-                            <p className='font-medium'>We provide healthy and fresh fruits of green garden</p>
+                            <h1 className='md:text-4xl lg:text-6xl text-center'>Buy Fresh <br/> Be Fresh</h1>
+                            <p className='hidden lg:flex lg:font-medium'>We provide healthy and fresh fruits of green garden</p>
                             <p className='text-xl font-semibold'>No need to worry about QUALITY and QUANTITY</p>
                         </div>
                     </div>
