@@ -1,21 +1,10 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import axiosInstance from '../../../axiosConfig';
 import ProductsHandle from './ProductsHandle';
-import { useContext } from 'react';
-import { AuthContext } from "../../AuthProvider/AuthProvider";
+
 // import Navbar from '../../SharedComponents/Navbar';
 
 const AdminHome = () => {
-    const {user,SignOut} = useContext(AuthContext)
-
-    const handleLogOut = () =>{
-        SignOut()
-        .then(res=>{
-            console.log(res);
-            window.location.replace('/login');
-        })
-    }
-
     //mutation for adding a new fruit
     const addNewFruitMutation = useMutation({
         mutationFn:(newFruit)=>{
@@ -55,10 +44,6 @@ const AdminHome = () => {
             {/* <Navbar></Navbar> */}
             <div>
                 <h1 className='text-2xl text-green-600 font-semibold text-center mb-1'>Admin Home</h1>
-            </div>
-            <div>
-            <p>{user?.displayName}</p>
-                <button onClick={handleLogOut} className='btn'>Log Out</button>
             </div>
             <div>
                 <h2 className='text-green-600 text-xl font-medium'>Add a product</h2>

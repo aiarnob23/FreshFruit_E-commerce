@@ -17,7 +17,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: ['http://localhost:5173'],
+  origin: ['https://freshfruit-c323e.web.app'],
   credentials: true,
 }));
 
@@ -87,13 +87,13 @@ async function run() {
 
     //get all fruits
     app.get('/fruits', async (req, res) => {
-        const page = parseInt(req.query.page);
-        const size = parseInt(req.query.size);
-        console.log(page, ' ', size);
-        const cursor = fruitsCollection.find().skip((page-1)*size).limit(size);
-        const result = await cursor.toArray();
-        return res.send(result);
-      
+      const page = parseInt(req.query.page);
+      const size = parseInt(req.query.size);
+      console.log(page, ' ', size);
+      const cursor = fruitsCollection.find().skip((page - 1) * size).limit(size);
+      const result = await cursor.toArray();
+      return res.send(result);
+
     })
 
     //add a fruit to the DB
@@ -107,7 +107,7 @@ async function run() {
     app.get('/fruitsLength', async (req, res) => {
       const cursor = fruitsCollection.find();
       const result = await cursor.toArray();
-      res.send({length: result.length});
+      res.send({ length: result.length });
     })
 
     //get fruits for HomePage sample
@@ -132,7 +132,7 @@ async function run() {
 
     })
     //update a product
-    app.put('/fruits/:id',verifyToken, async (req, res) => {
+    app.put('/fruits/:id', verifyToken, async (req, res) => {
       const id = req.params.id;
       const filter = { _id: new ObjectId(id) };
       const options = { upsert: true };
@@ -150,10 +150,17 @@ async function run() {
       res.send(result);
     })
     //delete a product 
-    app.delete('/fruits/:id', async(req,res)=>{
+    app.delete('/fruits/:id', async (req, res) => {
       const id = req.params.id;
-      const query = {_id: new ObjectId(id)}
+      const query = { _id: new ObjectId(id) };
       const result = await fruitsCollection.deleteOne(query);
+      res.send(result);
+    })
+    //delete a product from user cart
+    app.delete('/cart/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await fruitsCart.deleteOne(query);
       res.send(result);
     })
     //Post product to the cart
@@ -189,57 +196,58 @@ async function run() {
       }
     })
 
-    app.post('/paymentSuccess',(req,res)=>{
+
+    app.post('/paymentSuccess', (req, res) => {
       console.log(req);
-      res.redirect('http://localhost:5173/products');
+      res.redirect('https://freshfruit-c323e.web.app/products');
     })
-    app.post('/paymentFailed',(req,res)=>{
-      res.redirect('http://localhost:5173/cart');
+    app.post('/paymentFailed', (req, res) => {
+      res.redirect('https://freshfruit-c323e.web.app/cart');
     })
 
-    
+
     //sslcommerz init
-app.post('/init',verifyToken, (req, res) => {
-  const trans_id = new ObjectId().toString();
-  console.log(req.body);
-  const data = {
-      total_amount: req.body.price,
-      currency: 'BDT',
-      tran_id: trans_id, 
-      success_url: 'http://localhost:8080/paymentSuccess',
-      fail_url: 'http://localhost:8080/paymentFailed',
-      cancel_url: 'http://localhost:8080/paymentFailed',
-      ipn_url: 'http://localhost:3030/ipn',
-      shipping_method: 'Courier',
-      product_name: 'Computer.',
-      product_category: 'Electronic',
-      product_profile: 'general',
-      cus_name: 'Customer Name',
-      cus_email: 'customer@example.com',
-      cus_add1: 'Dhaka',
-      cus_add2: 'Dhaka',
-      cus_city: 'Dhaka',
-      cus_state: 'Dhaka',
-      cus_postcode: '1000',
-      cus_country: 'Bangladesh',
-      cus_phone: '01711111111',
-      cus_fax: '01711111111',
-      ship_name: 'Customer Name',
-      ship_add1: 'Dhaka',
-      ship_add2: 'Dhaka',
-      ship_city: 'Dhaka',
-      ship_state: 'Dhaka',
-      ship_postcode: 1000,
-      ship_country: 'Bangladesh',
-  };
-  const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live)
-  sslcz.init(data).then(apiResponse => {
-      // Redirect the user to payment gateway
-      let GatewayPageURL = apiResponse.GatewayPageURL
-      res.send({url: GatewayPageURL});
-      console.log('Redirecting to: ', GatewayPageURL)
-  });
-})
+    app.post('/init', verifyToken, (req, res) => {
+      const trans_id = new ObjectId().toString();
+      console.log(req.body);
+      const data = {
+        total_amount: req.body.price,
+        currency: 'BDT',
+        tran_id: trans_id,
+        success_url: 'https://server-sand-eta.vercel.app/paymentSuccess',
+        fail_url: 'https://server-sand-eta.vercel.app/paymentFailed',
+        cancel_url: 'https://server-sand-eta.vercel.app/paymentFailed',
+        ipn_url: 'https://server-sand-eta.vercel.app/ipn',
+        shipping_method: 'Courier',
+        product_name: 'Computer.',
+        product_category: 'Electronic',
+        product_profile: 'general',
+        cus_name: 'Customer Name',
+        cus_email: 'customer@example.com',
+        cus_add1: 'Dhaka',
+        cus_add2: 'Dhaka',
+        cus_city: 'Dhaka',
+        cus_state: 'Dhaka',
+        cus_postcode: '1000',
+        cus_country: 'Bangladesh',
+        cus_phone: '01711111111',
+        cus_fax: '01711111111',
+        ship_name: 'Customer Name',
+        ship_add1: 'Dhaka',
+        ship_add2: 'Dhaka',
+        ship_city: 'Dhaka',
+        ship_state: 'Dhaka',
+        ship_postcode: 1000,
+        ship_country: 'Bangladesh',
+      };
+      const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live)
+      sslcz.init(data).then(apiResponse => {
+        // Redirect the user to payment gateway
+        let GatewayPageURL = apiResponse.GatewayPageURL
+        res.send({ url: GatewayPageURL });
+        console.log('Redirecting to: ', GatewayPageURL)
+      });
+    })
 
 
 

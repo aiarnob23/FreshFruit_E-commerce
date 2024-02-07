@@ -57,10 +57,10 @@ const Register = () => {
     //---------return body-------
     return (
         <div className=" flex items-center container mx-auto justify-center">
-            <div className="hidden -mr-32 lg:flex ">
+            <div className="hidden -mr-36 lg:flex ">
                 <img className="h-[800px]" src={side} alt="" />
             </div>
-            <div className="hero">
+            <div className="hero lg:-ml-48">
                 <div className="hero-content flex-col">
                     <div className="text-center lg:text-left">
                         <h1 className="text-5xl text-green-600 font-bold">Register Here!</h1>
