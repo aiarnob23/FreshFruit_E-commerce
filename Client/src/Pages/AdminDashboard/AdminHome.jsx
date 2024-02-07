@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import axiosInstance from '../../../axiosConfig';
 import ProductsHandle from './ProductsHandle';
+import { successAlert } from '../../../sweetAlerts';
 
 // import Navbar from '../../SharedComponents/Navbar';
 
@@ -12,6 +13,7 @@ const AdminHome = () => {
         },
        onSuccess:()=>{
          refetch();
+         successAlert('Successfully added product');
        }
     })
 
@@ -22,7 +24,10 @@ const AdminHome = () => {
         const quantity = form.quantity.value;
         const price = form.price.value;
         const image = form.image.value;
-
+        form.name.value="";
+        form.quantity.value="";
+        form.price.value="";
+        form.image.value="";
         addNewFruitMutation.mutate({name,quantity,price, image});
     }
 
@@ -41,12 +46,8 @@ const AdminHome = () => {
         if (error) return error
     return (
         <div className='container mx-auto my-8'>
-            {/* <Navbar></Navbar> */}
             <div>
-                <h1 className='text-2xl text-green-600 font-semibold text-center mb-1'>Admin Home</h1>
-            </div>
-            <div>
-                <h2 className='text-green-600 text-xl font-medium'>Add a product</h2>
+                <h2 className='text-xl text-green-600 font-semibold text-center my-5'>Add a product</h2>
                 <div>
                     <form onSubmit={handleAddnewFruit}>
                         <input className='border-2 my-1 rounded-lg border-green-500 p-2' type="text" placeholder='Name' name='name' required />   <br />
@@ -59,7 +60,7 @@ const AdminHome = () => {
             </div>
             <div>
                 <h2 className='text-xl text-green-600 font-semibold text-center my-5'>Available Products</h2>
-                <div className='grid grid-cols-4 gap-4 '>
+                <div className='grid p-2 md:p-4 lg:p-0 md:grid-cols-2 lg:grid-cols-4 gap-4 '>
                     {
                         data.map(fruit => <ProductsHandle
                             key={fruit._id}

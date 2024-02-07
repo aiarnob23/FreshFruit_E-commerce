@@ -20,6 +20,7 @@ const Navbar = () => {
         SignOut()
             .then(res => {
                 console.log(res);
+                window.location.replace('/login');
             })
             .catch(error => console.log(error))
     }
